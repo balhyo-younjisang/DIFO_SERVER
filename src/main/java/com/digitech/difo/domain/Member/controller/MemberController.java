@@ -3,6 +3,7 @@ package com.digitech.difo.domain.Member.controller;
 import com.digitech.difo.domain.Member.domain.Member;
 import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Member.service.MemberService;
+import com.digitech.difo.domain.Project.service.ProjectService;
 import com.digitech.difo.global.common.SuccessResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final ProjectService projectService;
 
     /**
      * /api/v1/member/oauth/google/login 으로 GET 요청을 보낸 페이지를 구글 oauth 로그인 페이지로 리다이렉트
@@ -58,8 +60,9 @@ public class MemberController {
      * @return
      */
     @GetMapping("/details")
-    public ResponseEntity<SuccessResponse<MemberDTO.MemberResponseDTO>> getMemberDetails(@RequestParam(name = "id") Long memberId) {
+    public ResponseEntity<SuccessResponse<MemberDTO.MemberResponseDTO>> getMemberDetails(@RequestParam(name = "id") Long memberId) throws Exception {
         SuccessResponse<MemberDTO.MemberResponseDTO> response = this.memberService.findById(memberId);
+        response.getData().setProjectsId(this.projectService.findByMemberId(response.getData().getMemberId()));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));

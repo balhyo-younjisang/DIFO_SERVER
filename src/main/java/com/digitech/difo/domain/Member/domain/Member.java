@@ -1,7 +1,7 @@
 package com.digitech.difo.domain.Member.domain;
 
 import com.digitech.difo.domain.Member.dto.MemberDTO;
-import com.digitech.difo.domain.Project.domain.Project;
+import com.digitech.difo.domain.MemberProject.domain.MemberProject;
 import jakarta.persistence.*;
 import lombok.*;
 

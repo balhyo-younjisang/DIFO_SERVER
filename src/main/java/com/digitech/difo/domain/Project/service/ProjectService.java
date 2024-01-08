@@ -4,9 +4,10 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.digitech.difo.domain.Member.domain.Member;
-import com.digitech.difo.domain.Member.domain.MemberProject;
+import com.digitech.difo.domain.MemberProject.domain.MemberProject;
 import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Member.repository.MemberRepository;
+import com.digitech.difo.domain.MemberProject.repository.MemberProjectRepository;
 import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.Project.repository.ProjectRepository;
@@ -30,6 +31,7 @@ public class ProjectService {
     private final EntityManager entityManager;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
+    private final MemberProjectRepository memberProjectRepository;
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -77,6 +79,7 @@ public class ProjectService {
      * @return
      * @throws Exception
      */
+    @Transactional
     public SuccessResponse<Void> deleteProject(Long id) throws Exception {
         try {
             Optional<Project> existsProject = this.projectRepository.findById(id);
@@ -97,6 +100,7 @@ public class ProjectService {
      * @param id
      * @return
      */
+    @Transactional
     public SuccessResponse<ProjectDTO.ProjectDetailsResponseDTO> getProjectDetails(Long id) throws Exception {
         try {
             Optional<Project> existsProject = this.projectRepository.findById(id);
@@ -114,6 +118,23 @@ public class ProjectService {
             }
 
             return new SuccessResponse<>(true, existsProject.get().toDTO(members));
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Transactional
+    public List<Long> findByMemberId(Long memberId) throws Exception {
+        try {
+            Optional<Member> joinedMember = this.memberRepository.findById(memberId);
+            List<MemberProject> projects = this.memberProjectRepository.findAllByMember(joinedMember.get());
+            List<Long> projects_id = new ArrayList<>();
+
+            for(MemberProject project : projects) {
+                projects_id.add(project.getProject().getProject_id());
+            }
+
+            return projects_id;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

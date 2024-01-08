@@ -1,7 +1,6 @@
 package com.digitech.difo.domain.Project.domain;
 
-import com.digitech.difo.domain.Member.domain.Member;
-import com.digitech.difo.domain.Member.domain.MemberProject;
+import com.digitech.difo.domain.MemberProject.domain.MemberProject;
 import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.TechStack.domain.TechStack;
@@ -11,7 +10,6 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Data

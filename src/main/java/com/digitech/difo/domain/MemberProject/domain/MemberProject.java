@@ -1,5 +1,6 @@
-package com.digitech.difo.domain.Member.domain;
+package com.digitech.difo.domain.MemberProject.domain;
 
+import com.digitech.difo.domain.Member.domain.Member;
 import com.digitech.difo.domain.Project.domain.Project;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
