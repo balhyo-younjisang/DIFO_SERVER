@@ -9,6 +9,7 @@ public class MemberDTO {
     @Getter
     @Builder
     public static class MemberResponseDTO {
+        private Long memberId;
         private String name;
         private String email;
         private String githubUrl;

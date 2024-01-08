@@ -1,12 +1,15 @@
 package com.digitech.difo.domain.Project.service;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.digitech.difo.domain.Member.domain.Member;
 import com.digitech.difo.domain.Member.domain.MemberProject;
+import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Member.repository.MemberRepository;
 import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
+import com.digitech.difo.domain.Project.repository.ProjectRepository;
 import com.digitech.difo.global.common.SuccessResponse;
 import com.digitech.difo.global.common.utils.ConvertUtil;
 import jakarta.persistence.EntityManager;
@@ -17,12 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
     private final EntityManager entityManager;
     private final MemberRepository memberRepository;
+    private final ProjectRepository projectRepository;
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -62,5 +69,53 @@ public class ProjectService {
         }
 
         return new SuccessResponse<Project>(true, project);
+    }
+
+    /**
+     * 프로젝트 삭제
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public SuccessResponse<Void> deleteProject(Long id) throws Exception {
+        try {
+            Optional<Project> existsProject = this.projectRepository.findById(id);
+
+            if(existsProject.isEmpty()) {
+                throw new NotFoundException("Project is Not found");
+            }
+
+            this.projectRepository.deleteById(id);
+            return new SuccessResponse<Void>(true, null);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * 프로젝트 디테일 가져와서 리턴
+     * @param id
+     * @return
+     */
+    public SuccessResponse<ProjectDTO.ProjectDetailsResponseDTO> getProjectDetails(Long id) throws Exception {
+        try {
+            Optional<Project> existsProject = this.projectRepository.findById(id);
+
+            if(existsProject.isEmpty()) {
+                throw new NotFoundException("Project is Not Found");
+            }
+
+            List<MemberDTO.MemberResponseDTO> members = new ArrayList<>();
+            for(MemberProject memberProject : existsProject.get().getMembers()) {
+                Optional<Member> foundedMember = this.memberRepository.findById(memberProject.getMember().getMemberId());
+
+                if(foundedMember.isEmpty()) continue;
+                else members.add(foundedMember.get().toDTO());
+            }
+
+            return new SuccessResponse<>(true, existsProject.get().toDTO(members));
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }

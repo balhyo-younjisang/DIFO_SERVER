@@ -36,6 +36,6 @@ public class Member {
 
 
     public MemberDTO.MemberResponseDTO toDTO() {
-        return MemberDTO.MemberResponseDTO.builder().email(email).name(name).githubUrl(githubUrl).build();
+        return MemberDTO.MemberResponseDTO.builder().memberId(memberId).email(email).name(name).githubUrl(githubUrl).build();
     }
 }

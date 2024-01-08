@@ -2,6 +2,8 @@ package com.digitech.difo.domain.Project.domain;
 
 import com.digitech.difo.domain.Member.domain.Member;
 import com.digitech.difo.domain.Member.domain.MemberProject;
+import com.digitech.difo.domain.Member.dto.MemberDTO;
+import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.TechStack.domain.TechStack;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,6 +11,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Data
@@ -54,4 +57,13 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<TechStack> stacks;
 
+    public ProjectDTO.ProjectDetailsResponseDTO toDTO(List<MemberDTO.MemberResponseDTO> members) {
+        return ProjectDTO.ProjectDetailsResponseDTO.builder()
+                .projectName(projectName).projectIntroduction(projectIntroduction)
+                .deployUrl(deployUrl).thumbnailUrl(thumbnail)
+                .githubUrl(githubUrl).startDate(startDate)
+                .endDate(endDate).mainContents(mainContents)
+                .subject(subject).userData(members)
+                .build();
+    }
 }
