@@ -1,18 +1,20 @@
 package com.digitech.difo.domain.Member.service;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.digitech.difo.domain.Member.domain.Member;
+import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Member.repository.MemberRepository;
 import com.digitech.difo.global.auth.GoogleOAuthDto;
 import com.digitech.difo.global.auth.GoogleOAuthService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.digitech.difo.global.common.SuccessResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -28,7 +30,8 @@ public class MemberService extends GoogleOAuthService {
         return this.getGoogleOAuthRedirectUrl();
     }
 
-    public Member googleOAuthLogin(String code) throws Exception {
+    @Transactional
+    public SuccessResponse<MemberDTO.MemberResponseDTO> googleOAuthLogin(String code) throws Exception {
         try {
             ResponseEntity<String> accessTokenResponse = this.requestAccessToken(code);
             GoogleOAuthDto.GoogleOAuthTokenDTO oAuthToken = this.getAccessToken(accessTokenResponse);
@@ -46,12 +49,23 @@ public class MemberService extends GoogleOAuthService {
                         .picture(googleUserInfoDto.getPicture())
                         .build());
 
-                return memberRepository.findByEmail(googleUserInfoDto.getEmail());
+                Member createdMember =  memberRepository.findByEmail(googleUserInfoDto.getEmail());
+
+                return new SuccessResponse<MemberDTO.MemberResponseDTO>(true,  createdMember.toDTO());
             }
 
-            return memberRepository.findByEmail(googleUserInfoDto.getEmail());
+            Member member = memberRepository.findByEmail(googleUserInfoDto.getEmail());
+            return new SuccessResponse<MemberDTO.MemberResponseDTO>(true, member.toDTO());
         } catch (Exception e) {
             throw new Exception(e);
         }
+    }
+
+    public SuccessResponse<MemberDTO.MemberResponseDTO> findById(Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        if(member.isEmpty()) throw new NotFoundException("Member Not Found");
+
+        return new SuccessResponse<MemberDTO.MemberResponseDTO>(true, member.get().toDTO());
     }
 }
