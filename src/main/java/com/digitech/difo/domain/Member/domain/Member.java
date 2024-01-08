@@ -1,22 +1,23 @@
 package com.digitech.difo.domain.Member.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.digitech.difo.domain.Member.dto.MemberDTO;
+import com.digitech.difo.domain.Project.domain.Project;
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Member {
     @Id
+    @Column(name = "MEMBER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long memberId;
 
     @Column(nullable = false)
     private String name;
@@ -27,4 +28,14 @@ public class Member {
     @Column(nullable = false)
     private String picture;
 
+    @Column
+    private String githubUrl;
+
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "member", orphanRemoval = true)
+    private List<MemberProject> projects = new ArrayList<>();
+
+
+    public MemberDTO.MemberResponseDTO toDTO() {
+        return MemberDTO.MemberResponseDTO.builder().email(email).name(name).githubUrl(githubUrl).build();
+    }
 }

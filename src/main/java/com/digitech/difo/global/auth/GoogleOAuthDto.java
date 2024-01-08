@@ -25,5 +25,6 @@ public class GoogleOAuthDto {
         private String given_name;
         private String family_name;
         private String locale;
+        private String hd;
     }
 }
