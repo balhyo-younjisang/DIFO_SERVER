@@ -1,10 +1,7 @@
 package com.digitech.difo.domain.Board.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.digitech.difo.domain.Board.service.BoardService;
 import com.digitech.difo.domain.Board.domain.Board;
 
@@ -25,4 +22,13 @@ public class BoardController {
         return boardService.getPostById(id);
     }
 
+    @PostMapping("/register")
+    public void createBoard(){
+        return;
+    }
+
+    @GetMapping("/posts/{id}/like")
+    public void addLikes(@PathVariable Long id, int likes){
+        return;
+    }
 }
