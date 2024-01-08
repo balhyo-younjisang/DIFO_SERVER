@@ -16,8 +16,8 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
     @GetMapping("/{index}")
-    public List<String> getTitlesByPage(@PathVariable int pageIndex){
-        return boardService.getTitlesByPage(pageIndex);
+    public List<Object[]> getEntriesByPage(@PathVariable int index) {
+        return boardService.getListsByPage(index);
     }
 
     @GetMapping("/posts/{id}")
