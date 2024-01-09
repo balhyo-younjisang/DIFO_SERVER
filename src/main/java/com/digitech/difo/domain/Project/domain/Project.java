@@ -53,7 +53,12 @@ public class Project {
     private List<MemberProject> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<TechStack> stacks;
+    private List<TechStack> stacks = new ArrayList<>();
+
+    public void addStack(TechStack stack) {
+        stack.setProject(this);
+        this.stacks.add(stack);
+    }
 
     public ProjectDTO.ProjectDetailsResponseDTO toDTO(List<MemberDTO.MemberResponseDTO> members) {
         return ProjectDTO.ProjectDetailsResponseDTO.builder()

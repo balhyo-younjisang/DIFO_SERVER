@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -34,8 +34,11 @@ public class Member {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "member", orphanRemoval = true)
     private List<MemberProject> projects = new ArrayList<>();
 
+    public void setGithubUrl(String githubUrl) {
+        this.githubUrl = githubUrl;
+    }
 
     public MemberDTO.MemberResponseDTO toDTO() {
-        return MemberDTO.MemberResponseDTO.builder().memberId(memberId).email(email).name(name).githubUrl(githubUrl).build();
+        return MemberDTO.MemberResponseDTO.builder().memberId(this.getMemberId()).email(this.getEmail()).name(this.getName()).githubUrl(this.getGithubUrl()).build();
     }
 }

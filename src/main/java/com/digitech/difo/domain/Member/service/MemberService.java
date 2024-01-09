@@ -61,11 +61,23 @@ public class MemberService extends GoogleOAuthService {
         }
     }
 
+    @Transactional
     public SuccessResponse<MemberDTO.MemberResponseDTO> findById(Long memberId) {
         Optional<Member> member = memberRepository.findById(memberId);
 
-        if(member.isEmpty()) throw new NotFoundException("Member Not Found");
+        if(member.isEmpty()) throw new NotFoundException("Member is not exists");
 
         return new SuccessResponse<MemberDTO.MemberResponseDTO>(true, member.get().toDTO());
+    }
+
+    @Transactional
+    public SuccessResponse<Void> findAndUpdateMemberById(MemberDTO.MemberUpdateRequestDTO updateData) {
+        Optional<Member> member = memberRepository.findById(updateData.getMemberId());
+        if(member.isEmpty()) throw new NotFoundException("Member is not exists");
+
+        member.get().setGithubUrl(updateData.getGithubUrl());
+        memberRepository.save(member.get());
+
+        return new SuccessResponse<>(true, null);
     }
 }

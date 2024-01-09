@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -26,8 +27,8 @@ public class Board {
     @Column(nullable = false)
     private String author;
 
-    private String time;
+    private Date time;
 
-    private int likes;
+    private Long likes;
 
 }

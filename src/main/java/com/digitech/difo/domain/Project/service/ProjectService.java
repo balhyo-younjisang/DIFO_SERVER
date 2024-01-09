@@ -11,6 +11,8 @@ import com.digitech.difo.domain.MemberProject.repository.MemberProjectRepository
 import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.Project.repository.ProjectRepository;
+import com.digitech.difo.domain.TechStack.domain.TechStack;
+import com.digitech.difo.domain.TechStack.repository.TechStackReposiroty;
 import com.digitech.difo.global.common.SuccessResponse;
 import com.digitech.difo.global.common.utils.ConvertUtil;
 import jakarta.persistence.EntityManager;
@@ -70,6 +72,7 @@ public class ProjectService {
             entityManager.persist(memberProject);
         }
 
+
         return new SuccessResponse<Project>(true, project);
     }
 
@@ -123,6 +126,13 @@ public class ProjectService {
         }
     }
 
+
+    /**
+     * 멤버 아이디로 멤버를 검색 후 해당 멤버가 참여한 프로젝트 리스트를 리턴
+     * @param memberId
+     * @return
+     * @throws Exception
+     */
     @Transactional
     public List<Long> findByMemberId(Long memberId) throws Exception {
         try {
@@ -130,9 +140,7 @@ public class ProjectService {
             List<MemberProject> projects = this.memberProjectRepository.findAllByMember(joinedMember.get());
             List<Long> projects_id = new ArrayList<>();
 
-            for(MemberProject project : projects) {
-                projects_id.add(project.getProject().getProject_id());
-            }
+            projects.forEach(project -> projects_id.add(project.getProject().getProject_id()));
 
             return projects_id;
         } catch (Exception e) {

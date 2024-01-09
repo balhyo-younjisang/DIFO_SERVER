@@ -27,7 +27,7 @@ public class BoardController {
         return;
     }
 
-    @GetMapping("/posts/{id}/like")
+    @PostMapping("/posts/{id}/like")
     public void addLikes(@PathVariable Long id, int likes){
         return;
     }
