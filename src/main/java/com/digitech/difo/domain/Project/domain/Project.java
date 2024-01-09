@@ -3,7 +3,8 @@ package com.digitech.difo.domain.Project.domain;
 import com.digitech.difo.domain.MemberProject.domain.MemberProject;
 import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
-import com.digitech.difo.domain.TechStack.domain.TechStack;
+import com.digitech.difo.domain.ProjectStack.domain.ProjectStack;
+import com.digitech.difo.domain.TechStack.domain.Stack;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -53,7 +54,7 @@ public class Project {
     private List<MemberProject> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<TechStack> stacks = new ArrayList<>();
+    private List<ProjectStack> stacks = new ArrayList<>();
 
     public ProjectDTO.ProjectDetailsResponseDTO toDTO(List<MemberDTO.MemberResponseDTO> members) {
         return ProjectDTO.ProjectDetailsResponseDTO.builder()

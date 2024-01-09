@@ -1,9 +1,9 @@
 package com.digitech.difo.domain.TechStack.controller;
 
 import com.amazonaws.services.kms.model.NotFoundException;
-import com.digitech.difo.domain.TechStack.domain.TechStack;
-import com.digitech.difo.domain.TechStack.dto.TechStackDTO;
-import com.digitech.difo.domain.TechStack.service.TechStackService;
+import com.digitech.difo.domain.TechStack.domain.Stack;
+import com.digitech.difo.domain.TechStack.dto.StackDTO;
+import com.digitech.difo.domain.TechStack.service.StackService;
 import com.digitech.difo.global.common.SuccessResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -16,12 +16,12 @@ import java.nio.charset.StandardCharsets;
 
 @RestController
 @AllArgsConstructor
-public class TechStackControllerImpl implements TechStackController{
-    private final TechStackService techStackService;
+public class StackControllerImpl implements StackController {
+    private final StackService techStackService;
 
     @Override
-    public ResponseEntity<SuccessResponse<TechStack>> postAddStack(TechStackDTO.AddTechStackRequestDTO addTechStackRequestDTO) {
-        SuccessResponse<TechStack> techStack = techStackService.addStack(addTechStackRequestDTO.getStackName());
+    public ResponseEntity<SuccessResponse<Stack>> postAddStack(StackDTO.AddTechStackRequestDTO addTechStackRequestDTO) {
+        SuccessResponse<Stack> techStack = techStackService.addStack(addTechStackRequestDTO.getStackName());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
@@ -29,8 +29,8 @@ public class TechStackControllerImpl implements TechStackController{
     }
 
     @Override
-    public ResponseEntity<SuccessResponse<TechStackDTO.TechStackResponseDTO>> getStackData(String stackName) throws NotFoundException {
-        SuccessResponse<TechStackDTO.TechStackResponseDTO> techStack = techStackService.getStack(stackName);
+    public ResponseEntity<SuccessResponse<StackDTO.TechStackResponseDTO>> getStackData(String stackName) throws NotFoundException {
+        SuccessResponse<StackDTO.TechStackResponseDTO> techStack = techStackService.getStack(stackName);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 

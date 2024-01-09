@@ -2,7 +2,7 @@ package com.digitech.difo.domain.TechStack.domain;
 
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.ProjectStack.domain.ProjectStack;
-import com.digitech.difo.domain.TechStack.dto.TechStackDTO;
+import com.digitech.difo.domain.TechStack.dto.StackDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TechStack {
+public class Stack {
     @Id
+    @Column(name = "STACK_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stackId;
 
@@ -23,9 +24,9 @@ public class TechStack {
     private String stackName;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "stack", orphanRemoval = true)
-    private List<ProjectStack> project = new ArrayList<>();
+    private List<ProjectStack> projects = new ArrayList<>();
 
-    public TechStackDTO.TechStackResponseDTO toDTO(List<ProjectDTO.ProjectSummaryResponseDTO> projects) {
-        return TechStackDTO.TechStackResponseDTO.builder().stackId(stackId).stackName(stackName).projectsId(projects).build();
+    public StackDTO.TechStackResponseDTO toDTO(List<ProjectDTO.ProjectSummaryResponseDTO> projects) {
+        return StackDTO.TechStackResponseDTO.builder().stackId(stackId).stackName(stackName).projectsId(projects).build();
     }
 }

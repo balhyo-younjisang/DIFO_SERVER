@@ -6,11 +6,10 @@ import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.Project.repository.ProjectRepository;
 import com.digitech.difo.domain.ProjectStack.domain.ProjectStack;
-import com.digitech.difo.domain.TechStack.domain.TechStack;
-import com.digitech.difo.domain.TechStack.dto.TechStackDTO;
-import com.digitech.difo.domain.TechStack.repository.TechStackReposiroty;
+import com.digitech.difo.domain.TechStack.domain.Stack;
+import com.digitech.difo.domain.TechStack.dto.StackDTO;
+import com.digitech.difo.domain.TechStack.repository.StackReposiroty;
 import com.digitech.difo.global.common.SuccessResponse;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,26 +19,25 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TechStackService {
-    private final EntityManager entityManager;
-    private final TechStackReposiroty techStackReposiroty;
+public class StackService {
+    private final StackReposiroty techStackReposiroty;
     private final ProjectRepository projectRepository;
 
-    public SuccessResponse<TechStack> addStack(String stackName) {
-        Optional<TechStack> techStack = this.techStackReposiroty.findByStackName(stackName);
+    public SuccessResponse<Stack> addStack(String stackName) {
+        Optional<Stack> techStack = this.techStackReposiroty.findByStackName(stackName);
         if(techStack.isEmpty()) throw new AlreadyExistsException("Already stack is exists");
-        TechStack createdStack = this.techStackReposiroty.saveAndFlush(TechStack.builder().stackName(stackName).build());
+        Stack createdStack = this.techStackReposiroty.saveAndFlush(Stack.builder().stackName(stackName).projects(new ArrayList<>()).build());
 
         return new SuccessResponse<>(true, createdStack);
     }
 
-    public SuccessResponse<TechStackDTO.TechStackResponseDTO> getStack(String stackName) {
-        Optional<TechStack> existsTechStack = this.techStackReposiroty.findByStackName(stackName);
+    public SuccessResponse<StackDTO.TechStackResponseDTO> getStack(String stackName) {
+        Optional<Stack> existsTechStack = this.techStackReposiroty.findByStackName(stackName);
 
         if(existsTechStack.isEmpty()) throw new NotFoundException("Stack is not founded");
 
         List<ProjectDTO.ProjectSummaryResponseDTO> projects = new ArrayList<>();
-        for(ProjectStack techStack : existsTechStack.get().getProject()) {
+        for(ProjectStack techStack : existsTechStack.get().getProjects()) {
             Optional<Project> foundedProject = this.projectRepository.findById(techStack.getProject().getProject_id());
 
             if(foundedProject.isEmpty()) continue;

@@ -1,11 +1,9 @@
 package com.digitech.difo.domain.ProjectStack.domain;
 
 import com.digitech.difo.domain.Project.domain.Project;
-import com.digitech.difo.domain.TechStack.domain.TechStack;
+import com.digitech.difo.domain.TechStack.domain.Stack;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Stack;
 
 @Entity
 @Getter
@@ -20,10 +18,10 @@ public class ProjectStack {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STACK_ID")
-    private TechStack techStack;
+    private Stack stack;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name =" PROJECT_ID")
+    @JoinColumn(name = "PROJECT_ID")
     private Project project;
 }

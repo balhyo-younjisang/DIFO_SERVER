@@ -25,6 +25,6 @@ public class MemberProject {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name =" PROJECT_ID")
+    @JoinColumn(name ="PROJECT_ID")
     private Project project;
 }

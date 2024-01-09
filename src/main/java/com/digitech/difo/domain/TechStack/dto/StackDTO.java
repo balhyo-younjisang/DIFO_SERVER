@@ -5,7 +5,7 @@ import lombok.*;
 
 import java.util.List;
 
-public class TechStackDTO {
+public class StackDTO {
     @Getter
     public static abstract class TechStackBaseDTO {
         private Long stackId;

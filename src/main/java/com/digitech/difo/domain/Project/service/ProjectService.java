@@ -11,8 +11,6 @@ import com.digitech.difo.domain.MemberProject.repository.MemberProjectRepository
 import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.Project.repository.ProjectRepository;
-import com.digitech.difo.domain.TechStack.domain.TechStack;
-import com.digitech.difo.domain.TechStack.repository.TechStackReposiroty;
 import com.digitech.difo.global.common.SuccessResponse;
 import com.digitech.difo.global.common.utils.ConvertUtil;
 import jakarta.persistence.EntityManager;
