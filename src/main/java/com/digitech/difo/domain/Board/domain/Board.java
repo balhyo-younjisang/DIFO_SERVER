@@ -30,6 +30,4 @@ public class Board {
     private Date time;
 
     private Long likes;
-
-    private Long page;
 }
