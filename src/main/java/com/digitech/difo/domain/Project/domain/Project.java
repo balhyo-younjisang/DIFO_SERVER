@@ -55,11 +55,6 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<TechStack> stacks = new ArrayList<>();
 
-    public void addStack(TechStack stack) {
-        stack.setProject(this);
-        this.stacks.add(stack);
-    }
-
     public ProjectDTO.ProjectDetailsResponseDTO toDTO(List<MemberDTO.MemberResponseDTO> members) {
         return ProjectDTO.ProjectDetailsResponseDTO.builder()
                 .projectName(projectName).projectIntroduction(projectIntroduction)
@@ -68,5 +63,9 @@ public class Project {
                 .endDate(endDate).mainContents(mainContents)
                 .subject(subject).userData(members)
                 .build();
+    }
+
+    public ProjectDTO.ProjectSummaryResponseDTO toSummaryDTO(Long projectId, String projectName) {
+        return ProjectDTO.ProjectSummaryResponseDTO.builder().projectId(projectId).projectName(projectName).build();
     }
 }

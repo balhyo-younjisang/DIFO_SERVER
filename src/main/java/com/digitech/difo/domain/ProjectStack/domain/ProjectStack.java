@@ -1,27 +1,26 @@
-package com.digitech.difo.domain.MemberProject.domain;
+package com.digitech.difo.domain.ProjectStack.domain;
 
-import com.digitech.difo.domain.Member.domain.Member;
 import com.digitech.difo.domain.Project.domain.Project;
+import com.digitech.difo.domain.TechStack.domain.TechStack;
 import jakarta.persistence.*;
 import lombok.*;
 
-/**
- * 프로젝트와 멤버를 다대다 관계 매핑하기 위한 연결 클래스
- */
+import java.util.Stack;
+
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberProject {
+public class ProjectStack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberProjectId;
+    private Long stackProjectId;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
+    @JoinColumn(name = "STACK_ID")
+    private TechStack techStack;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)

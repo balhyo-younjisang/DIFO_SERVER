@@ -2,6 +2,7 @@ package com.digitech.difo.domain.Project.dto;
 
 import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Project.domain.Project;
+import com.fasterxml.classmate.AnnotationOverrides;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,5 +64,13 @@ public class ProjectDTO {
             this.thumbnailUrl = thumbnailUrl;
             this.userData = userData;
         }
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class ProjectSummaryResponseDTO {
+        private Long projectId;
+        private String projectName;
     }
 }
