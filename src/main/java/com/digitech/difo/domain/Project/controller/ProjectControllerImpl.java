@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @RestController
-@RequestMapping(value = "/api/v1/project")
 @AllArgsConstructor
 public class ProjectControllerImpl implements ProjectController{
     private final ProjectService projectService;

@@ -28,15 +28,12 @@ public class Member {
     @Column(nullable = false)
     private String picture;
 
+    @Setter
     @Column
     private String githubUrl;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "member", orphanRemoval = true)
     private List<MemberProject> projects = new ArrayList<>();
-
-    public void setGithubUrl(String githubUrl) {
-        this.githubUrl = githubUrl;
-    }
 
     public MemberDTO.MemberResponseDTO toDTO() {
         return MemberDTO.MemberResponseDTO.builder().memberId(this.getMemberId()).email(this.getEmail()).name(this.getName()).githubUrl(this.getGithubUrl()).build();
