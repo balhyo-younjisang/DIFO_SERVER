@@ -41,5 +41,4 @@ public interface MemberController {
      */
     @PatchMapping("/update")
     public ResponseEntity<SuccessResponse<Void>> updateMemberData(@ModelAttribute MemberDTO.MemberUpdateRequestDTO memberUpdateRequestDTO) throws Exception;
-
 }
