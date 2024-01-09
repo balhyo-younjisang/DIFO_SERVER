@@ -37,13 +37,10 @@ public class BoardControllerImpl implements BoardController {
         return boardService.getPostById(id);
     }
 
-    @PostMapping("/register")
-    public void createBoard(){
-        return;
+    @Override
+    public Board createBoard(Board board) throws Exception {
+        return boardService.createPost(board);
     }
 
-    @PostMapping("/posts/{id}/like")
-    public void addLikes(@PathVariable Long id, int likes){
-        return;
-    }
+
 }
