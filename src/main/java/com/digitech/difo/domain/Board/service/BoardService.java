@@ -15,10 +15,10 @@ public class BoardService {
         this.boardRepository = boardRepository;
     }
 
-    public List<String> getTitlesByPage(int pageIndex) {
+    public List<Object[]> getListsByPage(int pageIndex) {
         int pageSize = 20;
         Pageable pageable = PageRequest.of(pageIndex, pageSize);
-        return boardRepository.findTitlesBy(pageable);
+        return boardRepository.findListsByPage(pageable);
     }
 
     public Board getPostById(Long id) {
