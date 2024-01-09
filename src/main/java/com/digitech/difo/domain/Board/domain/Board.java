@@ -31,4 +31,5 @@ public class Board {
 
     private Long likes;
 
+    private Long page;
 }

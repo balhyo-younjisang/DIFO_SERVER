@@ -1,9 +1,12 @@
 package com.digitech.difo.domain.Board.controller;
 
+import com.digitech.difo.global.common.SuccessResponse;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.digitech.difo.domain.Board.service.BoardService;
 import com.digitech.difo.domain.Board.domain.Board;
+
 
 import java.util.List;
 
@@ -11,10 +14,13 @@ import java.util.List;
 @RequestMapping(value = "/api/v1/board")
 @AllArgsConstructor
 public class BoardController {
+    /**
+     * 이정욱 시봉봉봉방방방놈아
+     */
     private final BoardService boardService;
     @GetMapping("/{index}")
-    public List<Object[]> getEntriesByPage(@PathVariable int index) {
-        return boardService.getListsByPage(index);
+    public SuccessResponse<List<Board>> getEntriesByPage(@PathVariable int index, @PathParam(value = "count") int pageCount) {
+        return boardService.getListsByPage(index, pageCount);
     }
 
     @GetMapping("/posts/{id}")
