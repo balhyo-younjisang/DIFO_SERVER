@@ -31,4 +31,6 @@ public class BoardService {
     public Board getPostById(Long id) {
         return boardRepository.findById(id).orElse(null);
     }
+
+    public Board createPost(Board board) { return boardRepository.save(board);}
 }

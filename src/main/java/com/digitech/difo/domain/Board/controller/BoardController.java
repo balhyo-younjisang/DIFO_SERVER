@@ -35,7 +35,7 @@ public interface BoardController {
      * @throws Exception
      */
     @PostMapping("/register")
-    public void createBoard(@RequestBody Board board) throws  Exception;
+    public Board createBoard(@RequestBody Board board) throws  Exception;
 
     /**
      *

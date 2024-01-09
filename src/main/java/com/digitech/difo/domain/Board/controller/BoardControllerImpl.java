@@ -25,8 +25,8 @@ public class BoardControllerImpl implements BoardController{
     }
 
     @Override
-    public void createBoard(Board board) throws Exception {
-
+    public Board createBoard(Board board) throws Exception {
+        return boardService.createPost(board);
     }
 
     @Override
