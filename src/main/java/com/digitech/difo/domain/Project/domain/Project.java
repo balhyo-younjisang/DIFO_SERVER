@@ -5,6 +5,7 @@ import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.ProjectStack.domain.ProjectStack;
 import com.digitech.difo.domain.TechStack.domain.Stack;
+import com.digitech.difo.domain.TechStack.dto.StackDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -56,13 +57,13 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectStack> stacks = new ArrayList<>();
 
-    public ProjectDTO.ProjectDetailsResponseDTO toDTO(List<MemberDTO.MemberResponseDTO> members) {
+    public ProjectDTO.ProjectDetailsResponseDTO toDTO(List<MemberDTO.MemberResponseDTO> members, List<StackDTO.StackProjectResponseDTO> stacks) {
         return ProjectDTO.ProjectDetailsResponseDTO.builder()
                 .projectName(projectName).projectIntroduction(projectIntroduction)
                 .deployUrl(deployUrl).thumbnailUrl(thumbnail)
                 .githubUrl(githubUrl).startDate(startDate)
                 .endDate(endDate).mainContents(mainContents)
-                .subject(subject).userData(members)
+                .subject(subject).userData(members).stacks(stacks)
                 .build();
     }
 

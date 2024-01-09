@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -35,5 +36,14 @@ public class StackControllerImpl implements StackController {
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
         return new ResponseEntity<>(techStack, headers, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<SuccessResponse<List<StackDTO.StackProjectResponseDTO>>> getAllStackData() throws Exception {
+        SuccessResponse<List<StackDTO.StackProjectResponseDTO>> stacks = techStackService.getAllStack();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        return new ResponseEntity<>(stacks, headers, HttpStatus.OK);
     }
 }

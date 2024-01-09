@@ -11,6 +11,10 @@ import com.digitech.difo.domain.MemberProject.repository.MemberProjectRepository
 import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.Project.repository.ProjectRepository;
+import com.digitech.difo.domain.ProjectStack.domain.ProjectStack;
+import com.digitech.difo.domain.TechStack.domain.Stack;
+import com.digitech.difo.domain.TechStack.dto.StackDTO;
+import com.digitech.difo.domain.TechStack.repository.StackReposiroty;
 import com.digitech.difo.global.common.SuccessResponse;
 import com.digitech.difo.global.common.utils.ConvertUtil;
 import jakarta.persistence.EntityManager;
@@ -32,6 +36,7 @@ public class ProjectService {
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
     private final MemberProjectRepository memberProjectRepository;
+    private final StackReposiroty stackReposiroty;
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -70,6 +75,15 @@ public class ProjectService {
             entityManager.persist(memberProject);
         }
 
+        for(String stackName : ConvertUtil.StringToArray(registerProjectRequestDTO.getTechStacks())) {
+            Optional<Stack> stack = stackReposiroty.findByStackName(stackName);
+
+            ProjectStack projectStack = new ProjectStack();
+            projectStack.setProject(project);
+            projectStack.setStack(stack.get());
+            entityManager.persist(projectStack);
+        }
+
 
         return new SuccessResponse<Project>(true, project);
     }
@@ -98,6 +112,7 @@ public class ProjectService {
 
     /**
      * 프로젝트 디테일 가져와서 리턴
+     * @todo stacks 데이터에 project id를 넣기
      * @param id
      * @return
      */
@@ -112,13 +127,21 @@ public class ProjectService {
 
             List<MemberDTO.MemberResponseDTO> members = new ArrayList<>();
             for(MemberProject memberProject : existsProject.get().getMembers()) {
-                Optional<Member> foundedMember = this.memberRepository.findById(memberProject.getMember().getMemberId());
+                Optional<Member> existsMember = this.memberRepository.findById(memberProject.getMember().getMemberId());
 
-                if(foundedMember.isEmpty()) continue;
-                else members.add(foundedMember.get().toDTO());
+                if(existsMember.isEmpty()) continue;
+                else members.add(existsMember.get().toDTO());
             }
 
-            return new SuccessResponse<>(true, existsProject.get().toDTO(members));
+            List<StackDTO.StackProjectResponseDTO> stacks = new ArrayList<>();
+            for(ProjectStack projectStack : existsProject.get().getStacks()) {
+                Optional<Stack> existsStack = this.stackReposiroty.findById(projectStack.getStack().getStackId());
+
+                if(existsStack.isEmpty()) continue;
+                else stacks.add(projectStack.getStack().toSummaryDTO());
+            }
+
+            return new SuccessResponse<>(true, existsProject.get().toDTO(members, stacks));
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

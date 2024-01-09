@@ -2,6 +2,7 @@ package com.digitech.difo.domain.Project.dto;
 
 import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Project.domain.Project;
+import com.digitech.difo.domain.TechStack.dto.StackDTO;
 import com.fasterxml.classmate.AnnotationOverrides;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Stack;
 
 public class ProjectDTO {
     @Getter
@@ -58,12 +60,14 @@ public class ProjectDTO {
     public static class ProjectDetailsResponseDTO extends BaseProjectDTO {
         private String thumbnailUrl; // 포트폴리오 썸네일
         private List<MemberDTO.MemberResponseDTO> userData; // 참여한 유저들의 이메일
+        private List<StackDTO.StackProjectResponseDTO> stacks; // 스택들
 
         @Builder
-        public ProjectDetailsResponseDTO(String subject, String projectName, String projectIntroduction, Date startDate, Date endDate, String githubUrl, String deployUrl, String mainContents, String thumbnailUrl, List<MemberDTO.MemberResponseDTO> userData) {
+        public ProjectDetailsResponseDTO(String subject, String projectName, String projectIntroduction, Date startDate, Date endDate, String githubUrl, String deployUrl, String mainContents, String thumbnailUrl, List<MemberDTO.MemberResponseDTO> userData, List<StackDTO.StackProjectResponseDTO> stacks) {
             super(subject, projectName, projectIntroduction, startDate, endDate, githubUrl, deployUrl, mainContents);
             this.thumbnailUrl = thumbnailUrl;
             this.userData = userData;
+            this.stacks = stacks;
         }
     }
 

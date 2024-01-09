@@ -4,12 +4,13 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.digitech.difo.domain.TechStack.domain.Stack;
 import com.digitech.difo.domain.TechStack.dto.StackDTO;
 import com.digitech.difo.global.common.SuccessResponse;
+import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
+import lombok.Getter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping(value = "/api/v1/stack")
 public interface StackController {
@@ -19,7 +20,7 @@ public interface StackController {
      * @return
      */
     @PostMapping(value = "/create")
-    public ResponseEntity<SuccessResponse<Stack>> postAddStack(@ModelAttribute StackDTO.AddTechStackRequestDTO addTechStackRequestDTO);
+    public ResponseEntity<SuccessResponse<Stack>> postAddStack(@Valid @ModelAttribute StackDTO.AddTechStackRequestDTO addTechStackRequestDTO);
 
     /**
      * 기술스택의 이름을 Table에서 검색하여 추출한 데이터를 리턴
@@ -28,5 +29,8 @@ public interface StackController {
      * @throws NotFoundException
      */
     @GetMapping(value = "/stack")
-    public ResponseEntity<SuccessResponse<StackDTO.TechStackResponseDTO>> getStackData(@PathParam(value = "name") String stackName) throws NotFoundException;
+    public ResponseEntity<SuccessResponse<StackDTO.TechStackResponseDTO>> getStackData(@RequestParam(value = "name") String stackName) throws NotFoundException;
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<SuccessResponse<List<StackDTO.StackProjectResponseDTO>>> getAllStackData() throws Exception;
 }

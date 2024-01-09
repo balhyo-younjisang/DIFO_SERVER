@@ -25,7 +25,7 @@ public class StackService {
 
     public SuccessResponse<Stack> addStack(String stackName) {
         Optional<Stack> techStack = this.techStackReposiroty.findByStackName(stackName);
-        if(techStack.isEmpty()) throw new AlreadyExistsException("Already stack is exists");
+        if(!techStack.isEmpty()) throw new AlreadyExistsException("Already stack is exists");
         Stack createdStack = this.techStackReposiroty.saveAndFlush(Stack.builder().stackName(stackName).projects(new ArrayList<>()).build());
 
         return new SuccessResponse<>(true, createdStack);
@@ -50,5 +50,16 @@ public class StackService {
         }
 
         return new SuccessResponse<>(true, existsTechStack.get().toDTO(projects));
+    }
+
+    public SuccessResponse<List<StackDTO.StackProjectResponseDTO>> getAllStack() {
+        List<Stack> allStacks = this.techStackReposiroty.findAll();
+        List<StackDTO.StackProjectResponseDTO> responseList = new ArrayList<>();
+
+        for(Stack stack : allStacks) {
+            responseList.add(stack.toSummaryDTO());
+        }
+
+        return new SuccessResponse<>(true, responseList);
     }
 }

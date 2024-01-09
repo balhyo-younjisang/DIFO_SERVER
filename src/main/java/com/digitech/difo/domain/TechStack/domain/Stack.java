@@ -29,4 +29,8 @@ public class Stack {
     public StackDTO.TechStackResponseDTO toDTO(List<ProjectDTO.ProjectSummaryResponseDTO> projects) {
         return StackDTO.TechStackResponseDTO.builder().stackId(stackId).stackName(stackName).projectsId(projects).build();
     }
+
+    public StackDTO.StackProjectResponseDTO toSummaryDTO() {
+        return StackDTO.StackProjectResponseDTO.builder().stackName(stackName).stackId(stackId).build();
+    }
 }
