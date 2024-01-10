@@ -31,5 +31,12 @@ public class BoardComment {
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
 }
