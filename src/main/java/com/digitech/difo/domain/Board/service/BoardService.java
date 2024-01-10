@@ -33,4 +33,6 @@ public class BoardService {
     }
 
     public Board createPost(Board board) { return boardRepository.save(board);}
+
+    public void deletePost(Board board) { boardRepository.delete(board);}
 }

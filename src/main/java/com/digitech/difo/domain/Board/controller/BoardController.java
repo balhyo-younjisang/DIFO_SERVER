@@ -31,4 +31,7 @@ public interface BoardController {
 
     @PostMapping("/register")
     public Board createBoard(@RequestBody Board board) throws  Exception;
+
+    @DeleteMapping("/posts/{id}")
+    public void deleteBoard(@RequestBody Board board) throws Exception;
 }
