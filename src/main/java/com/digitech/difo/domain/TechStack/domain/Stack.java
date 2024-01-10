@@ -3,6 +3,7 @@ package com.digitech.difo.domain.TechStack.domain;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.ProjectStack.domain.ProjectStack;
 import com.digitech.difo.domain.TechStack.dto.StackDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Stack {
     @Column(nullable = false)
     private String stackName;
 
+    @JsonIgnore // 무한 순환을 막기 위해
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "stack", orphanRemoval = true)
     private List<ProjectStack> projects = new ArrayList<>();
 

@@ -20,11 +20,11 @@ public class MemberProject {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "MemberID")
     private Member member;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="PROJECT_ID")
+    @JoinColumn(name ="ProjectID")
     private Project project;
 }

@@ -38,11 +38,11 @@ public class StackService {
 
         List<ProjectDTO.ProjectSummaryResponseDTO> projects = new ArrayList<>();
         for(ProjectStack techStack : existsTechStack.get().getProjects()) {
-            Optional<Project> foundedProject = this.projectRepository.findById(techStack.getProject().getProject_id());
+            Optional<Project> foundedProject = this.projectRepository.findById(techStack.getProject().getProjectId());
 
             if(foundedProject.isEmpty()) continue;
             else {
-                Long projectId = foundedProject.get().getProject_id();
+                Long projectId = foundedProject.get().getProjectId();
                 String projectName = foundedProject.get().getProjectName();
 
                 projects.add(foundedProject.get().toSummaryDTO(projectId, projectName));

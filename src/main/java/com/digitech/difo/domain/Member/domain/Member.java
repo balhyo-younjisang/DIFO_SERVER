@@ -2,6 +2,7 @@ package com.digitech.difo.domain.Member.domain;
 
 import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.MemberProject.domain.MemberProject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,6 +33,7 @@ public class Member {
     @Column
     private String githubUrl;
 
+    @JsonIgnore // 무한 순환을 막기 위해
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "member", orphanRemoval = true)
     private List<MemberProject> projects = new ArrayList<>();
 

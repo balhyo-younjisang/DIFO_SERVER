@@ -51,7 +51,7 @@ public class ProjectDTO {
         }
 
         public Project toEntity(String imageUrl) {
-            return Project.builder().projectName(this.getProjectName()).thumbnail(imageUrl).subject(this.getSubject()).projectIntroduction(this.getProjectIntroduction()).startDate(this.getStartDate()).endDate(this.getEndDate()).githubUrl(this.getGithubUrl()).deployUrl(this.getDeployUrl()).mainContents(this.getMainContents()).stacks(new ArrayList<>()).build();
+            return Project.builder().projectName(this.getProjectName()).thumbnail(imageUrl).subject(this.getSubject()).projectIntroduction(this.getProjectIntroduction()).startDate(this.getStartDate()).endDate(this.getEndDate()).githubUrl(this.getGithubUrl()).deployUrl(this.getDeployUrl()).mainContents(this.getMainContents()).build();
         }
     }
 

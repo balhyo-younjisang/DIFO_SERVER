@@ -12,6 +12,7 @@ import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.Project.repository.ProjectRepository;
 import com.digitech.difo.domain.ProjectStack.domain.ProjectStack;
+import com.digitech.difo.domain.ProjectStack.repository.ProjectStackRepository;
 import com.digitech.difo.domain.TechStack.domain.Stack;
 import com.digitech.difo.domain.TechStack.dto.StackDTO;
 import com.digitech.difo.domain.TechStack.repository.StackReposiroty;
@@ -36,6 +37,7 @@ public class ProjectService {
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
     private final MemberProjectRepository memberProjectRepository;
+    private final ProjectStackRepository projectStackRepository;
     private final StackReposiroty stackReposiroty;
     private final AmazonS3Client amazonS3Client;
 
@@ -64,26 +66,35 @@ public class ProjectService {
         // 썸네일 이미지 저장 후 이미지 url 가져오기
         String imageUrl = this.saveFile(registerProjectRequestDTO.getThumbnail());
         Project project = registerProjectRequestDTO.toEntity(imageUrl);
-        entityManager.persist(project);
+        this.projectRepository.save(project);
 
+        List<MemberProject> projectMembers = new ArrayList<>();
         for(String email : ConvertUtil.StringToArray(registerProjectRequestDTO.getUserEmails())) {
             Member member = memberRepository.findByEmail(email);
 
             MemberProject memberProject = new MemberProject();
             memberProject.setProject(project);
             memberProject.setMember(member);
-            entityManager.persist(memberProject);
+
+            projectMembers.add(memberProject);
+            this.memberProjectRepository.saveAndFlush(memberProject);
         }
 
+        List<ProjectStack> projectStackList = new ArrayList<>();
         for(String stackName : ConvertUtil.StringToArray(registerProjectRequestDTO.getTechStacks())) {
             Optional<Stack> stack = stackReposiroty.findByStackName(stackName);
 
             ProjectStack projectStack = new ProjectStack();
             projectStack.setProject(project);
             projectStack.setStack(stack.get());
-            entityManager.persist(projectStack);
+
+            projectStackList.add(projectStack);
+            this.projectStackRepository.saveAndFlush(projectStack);
         }
 
+        project.setStacks(projectStackList);
+        project.setMembers(projectMembers);
+        this.projectRepository.saveAndFlush(project);
 
         return new SuccessResponse<Project>(true, project);
     }
@@ -161,7 +172,7 @@ public class ProjectService {
             List<MemberProject> projects = this.memberProjectRepository.findAllByMember(joinedMember.get());
             List<Long> projects_id = new ArrayList<>();
 
-            projects.forEach(project -> projects_id.add(project.getProject().getProject_id()));
+            projects.forEach(project -> projects_id.add(project.getProject().getProjectId()));
 
             return projects_id;
         } catch (Exception e) {

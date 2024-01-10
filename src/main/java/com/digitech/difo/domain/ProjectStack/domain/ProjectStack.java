@@ -17,11 +17,11 @@ public class ProjectStack {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STACK_ID")
+    @JoinColumn(name = "StackID")
     private Stack stack;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PROJECT_ID")
+    @JoinColumn(name = "ProjectID")
     private Project project;
 }

@@ -4,8 +4,8 @@ import com.digitech.difo.domain.MemberProject.domain.MemberProject;
 import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.ProjectStack.domain.ProjectStack;
-import com.digitech.difo.domain.TechStack.domain.Stack;
 import com.digitech.difo.domain.TechStack.dto.StackDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +22,7 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PROJECT_ID")
-    private Long project_id;
+    private Long projectId;
     
     @Column(nullable = false)
     private String thumbnail; // 포트폴리오 썸네일
@@ -51,9 +51,11 @@ public class Project {
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String mainContents; // 프로젝트 내용
 
+    @JsonIgnore // 무한 순환을 막기 위해
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberProject> members = new ArrayList<>();
 
+    @JsonIgnore // 무한 순환을 막기 위해
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectStack> stacks = new ArrayList<>();
 
