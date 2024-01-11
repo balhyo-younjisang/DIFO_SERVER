@@ -218,4 +218,36 @@ public class ProjectService {
             throw new Exception(e.getMessage());
         }
     }
+
+    public SuccessResponse<List<ProjectDTO.ProjectDetailsResponseDTO>> findAllProject() {
+        List<Project> projects = this.projectRepository.findAll();
+
+        List<MemberDTO.MemberResponseDTO> members = new ArrayList<>();
+        for(int i = 0; i < projects.size(); i++) {
+            for (MemberProject memberProject : projects.get(i).getMembers()) {
+                Optional<Member> existsMember = this.memberRepository.findById(memberProject.getMember().getMemberId());
+
+                if (existsMember.isEmpty()) continue;
+                else members.add(existsMember.get().toDTO());
+            }
+        }
+
+        List<StackDTO.StackProjectResponseDTO> stacks = new ArrayList<>();
+        for(int i = 0; i < projects.size(); i++) {
+            for (ProjectStack projectStack : projects.get(i).getStacks()) {
+                Optional<Stack> existsStack = this.stackReposiroty.findById(projectStack.getStack().getStackId());
+
+                if (existsStack.isEmpty()) continue;
+                else stacks.add(projectStack.getStack().toSummaryDTO());
+            }
+        }
+
+        List<ProjectDTO.ProjectDetailsResponseDTO> response = new ArrayList<>();
+        for(int i = 0; i < projects.size(); i++) {
+            response.add(projects.get(i).toDTO(members, stacks));
+        }
+
+        return new SuccessResponse<>(true, response);
+
+    }
 }

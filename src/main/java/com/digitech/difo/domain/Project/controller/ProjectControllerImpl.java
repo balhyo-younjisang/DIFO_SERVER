@@ -71,5 +71,12 @@ public class ProjectControllerImpl implements ProjectController{
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<SuccessResponse<List<ProjectDTO.ProjectDetailsResponseDTO>>> getAllProject() {
+        SuccessResponse<List<ProjectDTO.ProjectDetailsResponseDTO>> response = this.projectService.findAllProject();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
 }

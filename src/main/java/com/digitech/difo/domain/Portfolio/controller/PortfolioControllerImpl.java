@@ -30,6 +30,15 @@ public class PortfolioControllerImpl implements PortfolioController {
     }
 
     @Override
+    public ResponseEntity<SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>>> getAllPortfolio() {
+        SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>> response = this.portfolioService.allPortfolio();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<SuccessResponse<PortfolioDTO.ViewPortfolioResponseDTO>> viewPortfolio(Long portfolioId) throws Exception {
         SuccessResponse<PortfolioDTO.ViewPortfolioResponseDTO> response = this.portfolioService.viewPortfolioDetails(portfolioId);
 

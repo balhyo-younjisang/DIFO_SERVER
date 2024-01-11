@@ -21,6 +21,12 @@ public interface PortfolioController {
     public ResponseEntity<SuccessResponse<Portfolio>> createPortfolio(@ModelAttribute PortfolioDTO.CreatePortfolioRequestDTO createPortfolioRequestDTO);
 
     /**
+     * 포트폴리오 모두 가져옴
+     */
+    @GetMapping("/all")
+    public ResponseEntity<SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>>> getAllPortfolio();
+
+    /**
      * 포트폴리오 데이터를 가져와 리턴하는 메서드
      * @param portfolioId
      * @return

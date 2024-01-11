@@ -47,4 +47,7 @@ public interface ProjectController {
 
     @GetMapping("/recommend")
     public ResponseEntity<SuccessResponse<List<ProjectDTO.ProjectSummaryResponseDTO>>> getProjectsRecommend() throws Exception;
+
+    @GetMapping("/all")
+    public ResponseEntity<SuccessResponse<List<ProjectDTO.ProjectDetailsResponseDTO>>> getAllProject();
 }
