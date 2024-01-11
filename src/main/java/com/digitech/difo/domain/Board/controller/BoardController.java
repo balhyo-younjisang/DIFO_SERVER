@@ -37,4 +37,7 @@ public interface BoardController {
 
     @PostMapping("/like")
     public Board updateLikes(@RequestParam(value="id")Long id) throws  Exception;
+
+    @PostMapping("/sort")
+    public ResponseEntity<SuccessResponse<List<Board>>> sortBoards(@RequestParam(value = "type")String type) throws Exception;
 }

@@ -34,4 +34,8 @@ public class Board {
     public void setLikes(long likes) {
         this.likes = likes;
     }
+    public long getBoardId() {
+        return boardId;
+    }
+
 }

@@ -53,5 +53,10 @@ public class BoardControllerImpl implements BoardController {
         return boardService.updateLikes(id);
     }
 
+    @Override
+    public ResponseEntity<SuccessResponse<List<Board>>> sortBoards(String type) throws Exception {
+        return boardService.sortBoard(type);
+    }
+
 
 }
