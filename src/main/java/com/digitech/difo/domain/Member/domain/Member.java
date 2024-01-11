@@ -38,7 +38,7 @@ public class Member {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "member", orphanRemoval = true)
     private List<MemberProject> projects = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @Setter
     @JoinColumn(name = "PORTFOLIO_ID")
     private Portfolio portfolio;

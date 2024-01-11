@@ -16,7 +16,7 @@ public interface PortfolioController {
      * @return
      */
     @PostMapping("/create")
-    public ResponseEntity<SuccessResponse<Portfolio>> createPortfolio(@ModelAttribute PortfolioDTO.PortfolioBaseDTO portfolioBaseDTO);
+    public ResponseEntity<SuccessResponse<Portfolio>> createPortfolio(@ModelAttribute PortfolioDTO.CreatePortfolioRequestDTO createPortfolioRequestDTO);
 
     /**
      * 포트폴리오 데이터를 가져와 리턴하는 메서드
@@ -24,7 +24,7 @@ public interface PortfolioController {
      * @return
      */
     @GetMapping("/view")
-    public ResponseEntity<SuccessResponse<PortfolioDTO.PortfolioBaseDTO>> viewPortfolio(@RequestParam(name = "id") Long portfolioId);
+    public ResponseEntity<SuccessResponse<PortfolioDTO.ViewPortfolioResponseDTO>> viewPortfolio(@RequestParam(name = "id") Long portfolioId) throws Exception;
 
     /**
      * 포트폴리오 업데이트
@@ -41,4 +41,7 @@ public interface PortfolioController {
      */
     @DeleteMapping("/delete")
     public ResponseEntity<SuccessResponse<Void>> deletePortfolio(@RequestParam(name = "id") Long portfolioId);
+
+    @PatchMapping("/likes")
+    public ResponseEntity<SuccessResponse<PortfolioDTO.ViewPortfolioResponseDTO>> likesPortfolio(@RequestParam(name = "id") long id) throws Exception;
 }
