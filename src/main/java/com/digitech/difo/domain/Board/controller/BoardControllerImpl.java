@@ -43,9 +43,11 @@ public class BoardControllerImpl implements BoardController {
     }
 
     @Override
-    public void deleteBoard(Board board) throws Exception {
-        boardService.deletePost(board);
+    public SuccessResponse<Void> deleteBoard(Long id) throws Exception {
+        return boardService.deletePost(id);
     }
+
+
 
 
 }
