@@ -44,8 +44,9 @@ public class StackService {
             else {
                 Long projectId = foundedProject.get().getProjectId();
                 String projectName = foundedProject.get().getProjectName();
+                String thumbnail = foundedProject.get().getThumbnail();
 
-                projects.add(foundedProject.get().toSummaryDTO(projectId, projectName));
+                projects.add(foundedProject.get().toSummaryDTO(projectId, projectName, thumbnail));
             }
         }
 

@@ -8,6 +8,8 @@ import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping(value = "/api/v1/portfolio")
 public interface PortfolioController {
     /**
@@ -44,4 +46,10 @@ public interface PortfolioController {
 
     @PatchMapping("/likes")
     public ResponseEntity<SuccessResponse<PortfolioDTO.ViewPortfolioResponseDTO>> likesPortfolio(@RequestParam(name = "id") long id) throws Exception;
+
+    /**
+     * 포트폴리오 추천 순으로 조회
+     */
+    @GetMapping("/recommend")
+    public ResponseEntity<SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>>> getRecommendPortfolio() throws Exception;
 }

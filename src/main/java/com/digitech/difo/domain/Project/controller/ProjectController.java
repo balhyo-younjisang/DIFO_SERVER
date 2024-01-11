@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RequestMapping(value = "/api/v1/project")
 public interface ProjectController {
@@ -43,4 +44,7 @@ public interface ProjectController {
      */
     @PatchMapping("/likes")
     public ResponseEntity<SuccessResponse<Void>> patchLikeProject(@RequestParam(value = "id") Long id) throws Exception;
+
+    @GetMapping("/recommend")
+    public ResponseEntity<SuccessResponse<List<ProjectDTO.ProjectSummaryResponseDTO>>> getProjectsRecommend() throws Exception;
 }

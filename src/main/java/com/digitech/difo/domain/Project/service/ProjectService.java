@@ -9,6 +9,7 @@ import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Member.repository.MemberRepository;
 import com.digitech.difo.domain.MemberProject.repository.MemberProjectRepository;
 import com.digitech.difo.domain.Portfolio.domain.Portfolio;
+import com.digitech.difo.domain.Portfolio.dto.PortfolioDTO;
 import com.digitech.difo.domain.Portfolio.repository.PortfolioRepository;
 import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
@@ -35,12 +36,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
-    private final EntityManager entityManager;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
     private final MemberProjectRepository memberProjectRepository;
     private final ProjectStackRepository projectStackRepository;
-    private final PortfolioRepository portfolioRepository;
     private final StackReposiroty stackReposiroty;
     private final AmazonS3Client amazonS3Client;
 
@@ -198,6 +197,23 @@ public class ProjectService {
             this.projectRepository.saveAndFlush(project.get());
 
             return new SuccessResponse<>(true, null);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public SuccessResponse<List<ProjectDTO.ProjectSummaryResponseDTO>> getRecommendProjects() throws Exception {
+        try {
+            List<Project> projects = this.projectRepository.findAllByOrderByLikes();
+            List<ProjectDTO.ProjectSummaryResponseDTO> recommendProjectsDTO = new ArrayList<>();
+            projects.forEach(project -> {
+                Long projectId = project.getProjectId();
+                String projectName = project.getProjectName();
+                String thunmnail = project.getThumbnail();
+
+                recommendProjectsDTO.add(project.toSummaryDTO(projectId, projectName, thunmnail));
+            });
+            return new SuccessResponse<>(true, recommendProjectsDTO);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
