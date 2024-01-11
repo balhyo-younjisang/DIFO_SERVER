@@ -6,10 +6,14 @@ import com.digitech.difo.domain.BoardComment.domain.BoardComment;
 import com.digitech.difo.domain.BoardComment.repository.BoardCommentRepository;
 import com.digitech.difo.domain.Member.domain.Member;
 import com.digitech.difo.domain.Member.repository.MemberRepository;
+import com.digitech.difo.global.common.SuccessResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +24,20 @@ public class BoardCommentService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void createBoardComment(BoardComment boardComment, Optional<Long> memberId, long boardId) throws Exception {
+    public ResponseEntity<SuccessResponse<List<BoardComment>>> getComments(long id) {
+        List<BoardComment> comments = boardCommentRepository.findAllCommentsByBoardBoardId(id);
+        System.out.println(id);
+        //List<Board> comments = boardCommentRepository.findAllByBoardId(id);
+
+        // Assuming SuccessResponse is a custom class you have defined
+        SuccessResponse<List<BoardComment>> successResponse = new SuccessResponse<>(true, comments);
+
+        return ResponseEntity.ok(successResponse);
+    }
+
+    @Transactional
+    public void createBoardComment(BoardComment boardComment,  long boardId, Optional<Long> memberId) throws Exception {
+        System.out.println(memberId);
         // 게시물이 존재하는지 확인
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new Exception("ID " + boardId + "에 해당하는 게시물을 찾을 수 없습니다."));

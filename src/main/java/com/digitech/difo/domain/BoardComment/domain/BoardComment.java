@@ -24,12 +24,16 @@ public class BoardComment {
     @Column(nullable = false)
     private String author;
 
+    @Column(name = "memberId", nullable = false, insertable = false, updatable = false)
+    private long memberId;
+
+
     @ManyToOne
     @JoinColumn(name = "board_id")
     private Board board;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "memberId")
     private Member member;
     public void setBoard(Board board) {
         this.board = board;

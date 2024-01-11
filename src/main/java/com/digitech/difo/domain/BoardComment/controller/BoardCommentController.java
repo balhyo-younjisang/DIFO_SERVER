@@ -12,9 +12,9 @@ import java.util.Optional;
 @RequestMapping(value = "/api/v1/board")
 public interface BoardCommentController {
     @GetMapping("/posts/{id}/comment")
-    public ResponseEntity<SuccessResponse<List<Board>>> getComments(@PathVariable long id) throws Exception;
+    public ResponseEntity<SuccessResponse<List<BoardComment>>> getComments(@PathVariable long id) throws Exception;
 
     @PostMapping("/posts/{id}/comment")
-    public void createComment(@RequestBody BoardComment boardComment, Optional<Long>  memberId, @PathVariable long id) throws  Exception;
+    public void createComment(@RequestBody BoardComment boardComment, @PathVariable long id, @RequestParam(name = "memberId", required = false) Optional<Long> memberId) throws  Exception;
 
 }
