@@ -51,8 +51,9 @@ public class PortfolioService {
             this.portfolioRepository.save(portfolio.get());
 
             Long memberId = portfolio.get().getMember().getMemberId();
+            Long likes = portfolio.get().getLikes();
 
-            return new SuccessResponse<>(true, portfolio.get().toResponseDTO(memberId));
+            return new SuccessResponse<>(true, portfolio.get().toResponseDTO(memberId, likes));
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -65,8 +66,9 @@ public class PortfolioService {
             if(portfolio.isEmpty()) throw new NotFoundException("Portfolio is Not Found");
 
             Long memberId = portfolio.get().getMember().getMemberId();
+            Long likes = portfolio.get().getLikes();
 
-            return new SuccessResponse<>(true, portfolio.get().toResponseDTO(memberId));
+            return new SuccessResponse<>(true, portfolio.get().toResponseDTO(memberId, likes));
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

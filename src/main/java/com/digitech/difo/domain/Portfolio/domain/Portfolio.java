@@ -41,7 +41,7 @@ public class Portfolio {
     @Builder.Default
     private long likes = 0;
 
-    public PortfolioDTO.ViewPortfolioResponseDTO toResponseDTO(Long memberId) {
+    public PortfolioDTO.ViewPortfolioResponseDTO toResponseDTO(Long memberId, Long likes) {
         return PortfolioDTO.ViewPortfolioResponseDTO.builder().portfolioId(portfolioId).portfolioTitle(portfolioTitle).portfolioContent(portfolioContent).githubUrl(githubUrl).likes(likes).createdDate(createdDate).memberId(memberId).build();
     }
 
