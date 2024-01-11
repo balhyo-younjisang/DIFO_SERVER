@@ -99,4 +99,13 @@ public class BoardService {
             throw new Exception(e.getMessage());
         }
     }
+    public ResponseEntity<SuccessResponse<Board>> latestBoard() throws Exception {
+        try {
+            List<Board> sortedBoard;
+            sortedBoard = boardRepository.findByOrderByTimeDesc();
+            return ResponseEntity.ok(new SuccessResponse<>(true, sortedBoard.get(0)));
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
 }

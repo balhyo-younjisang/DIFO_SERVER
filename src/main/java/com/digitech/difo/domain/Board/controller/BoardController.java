@@ -40,4 +40,7 @@ public interface BoardController {
 
     @PostMapping("/sort")
     public ResponseEntity<SuccessResponse<List<Board>>> sortBoards(@RequestParam(value = "type")String type) throws Exception;
+
+    @PostMapping("/latest")
+    public ResponseEntity<SuccessResponse<Board>> getLatestBoard() throws Exception;
 }

@@ -58,5 +58,10 @@ public class BoardControllerImpl implements BoardController {
         return boardService.sortBoard(type);
     }
 
+    @Override
+    public ResponseEntity<SuccessResponse<Board>> getLatestBoard() throws Exception {
+        return boardService.latestBoard();
+    }
+
 
 }
