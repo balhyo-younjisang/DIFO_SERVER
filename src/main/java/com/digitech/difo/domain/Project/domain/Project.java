@@ -73,7 +73,7 @@ public class Project {
                 .build();
     }
 
-    public ProjectDTO.ProjectSummaryResponseDTO toSummaryDTO(Long projectId, String projectName) {
-        return ProjectDTO.ProjectSummaryResponseDTO.builder().projectId(projectId).projectName(projectName).build();
+    public ProjectDTO.ProjectSummaryResponseDTO toSummaryDTO(Long projectId, String projectName, String thumbnail) {
+        return ProjectDTO.ProjectSummaryResponseDTO.builder().projectId(projectId).projectName(projectName).thumbnail(thumbnail).build();
     }
 }

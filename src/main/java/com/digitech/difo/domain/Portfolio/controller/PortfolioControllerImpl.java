@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +27,15 @@ public class PortfolioControllerImpl implements PortfolioController {
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
         return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>>> getAllPortfolio() {
+        SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>> response = this.portfolioService.allPortfolio();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
     @Override
@@ -51,6 +61,16 @@ public class PortfolioControllerImpl implements PortfolioController {
     @Override
     public ResponseEntity<SuccessResponse<PortfolioDTO.ViewPortfolioResponseDTO>> likesPortfolio(long id) throws Exception {
         SuccessResponse<PortfolioDTO.ViewPortfolioResponseDTO> response = this.portfolioService.likePortfolio(id);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>>> getRecommendPortfolio() throws Exception {
+        SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>> response = this.portfolioService.recommendPortfolios();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));

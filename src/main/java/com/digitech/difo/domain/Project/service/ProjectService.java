@@ -9,6 +9,7 @@ import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Member.repository.MemberRepository;
 import com.digitech.difo.domain.MemberProject.repository.MemberProjectRepository;
 import com.digitech.difo.domain.Portfolio.domain.Portfolio;
+import com.digitech.difo.domain.Portfolio.dto.PortfolioDTO;
 import com.digitech.difo.domain.Portfolio.repository.PortfolioRepository;
 import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
@@ -35,12 +36,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
-    private final EntityManager entityManager;
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
     private final MemberProjectRepository memberProjectRepository;
     private final ProjectStackRepository projectStackRepository;
-    private final PortfolioRepository portfolioRepository;
     private final StackReposiroty stackReposiroty;
     private final AmazonS3Client amazonS3Client;
 
@@ -201,5 +200,54 @@ public class ProjectService {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    public SuccessResponse<List<ProjectDTO.ProjectSummaryResponseDTO>> getRecommendProjects() throws Exception {
+        try {
+            List<Project> projects = this.projectRepository.findAllByOrderByLikes();
+            List<ProjectDTO.ProjectSummaryResponseDTO> recommendProjectsDTO = new ArrayList<>();
+            projects.forEach(project -> {
+                Long projectId = project.getProjectId();
+                String projectName = project.getProjectName();
+                String thunmnail = project.getThumbnail();
+
+                recommendProjectsDTO.add(project.toSummaryDTO(projectId, projectName, thunmnail));
+            });
+            return new SuccessResponse<>(true, recommendProjectsDTO);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public SuccessResponse<List<ProjectDTO.ProjectDetailsResponseDTO>> findAllProject() {
+        List<Project> projects = this.projectRepository.findAll();
+
+        List<MemberDTO.MemberResponseDTO> members = new ArrayList<>();
+        for(int i = 0; i < projects.size(); i++) {
+            for (MemberProject memberProject : projects.get(i).getMembers()) {
+                Optional<Member> existsMember = this.memberRepository.findById(memberProject.getMember().getMemberId());
+
+                if (existsMember.isEmpty()) continue;
+                else members.add(existsMember.get().toDTO());
+            }
+        }
+
+        List<StackDTO.StackProjectResponseDTO> stacks = new ArrayList<>();
+        for(int i = 0; i < projects.size(); i++) {
+            for (ProjectStack projectStack : projects.get(i).getStacks()) {
+                Optional<Stack> existsStack = this.stackReposiroty.findById(projectStack.getStack().getStackId());
+
+                if (existsStack.isEmpty()) continue;
+                else stacks.add(projectStack.getStack().toSummaryDTO());
+            }
+        }
+
+        List<ProjectDTO.ProjectDetailsResponseDTO> response = new ArrayList<>();
+        for(int i = 0; i < projects.size(); i++) {
+            response.add(projects.get(i).toDTO(members, stacks));
+        }
+
+        return new SuccessResponse<>(true, response);
+
     }
 }

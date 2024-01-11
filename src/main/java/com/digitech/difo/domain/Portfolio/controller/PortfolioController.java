@@ -8,6 +8,8 @@ import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping(value = "/api/v1/portfolio")
 public interface PortfolioController {
     /**
@@ -17,6 +19,12 @@ public interface PortfolioController {
      */
     @PostMapping("/create")
     public ResponseEntity<SuccessResponse<Portfolio>> createPortfolio(@ModelAttribute PortfolioDTO.CreatePortfolioRequestDTO createPortfolioRequestDTO);
+
+    /**
+     * 포트폴리오 모두 가져옴
+     */
+    @GetMapping("/all")
+    public ResponseEntity<SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>>> getAllPortfolio();
 
     /**
      * 포트폴리오 데이터를 가져와 리턴하는 메서드
@@ -44,4 +52,10 @@ public interface PortfolioController {
 
     @PatchMapping("/likes")
     public ResponseEntity<SuccessResponse<PortfolioDTO.ViewPortfolioResponseDTO>> likesPortfolio(@RequestParam(name = "id") long id) throws Exception;
+
+    /**
+     * 포트폴리오 추천 순으로 조회
+     */
+    @GetMapping("/recommend")
+    public ResponseEntity<SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>>> getRecommendPortfolio() throws Exception;
 }

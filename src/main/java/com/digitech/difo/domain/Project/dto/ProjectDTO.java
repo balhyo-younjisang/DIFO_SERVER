@@ -79,5 +79,6 @@ public class ProjectDTO {
     public static class ProjectSummaryResponseDTO {
         private Long projectId;
         private String projectName;
+        private String thumbnail;
     }
 }

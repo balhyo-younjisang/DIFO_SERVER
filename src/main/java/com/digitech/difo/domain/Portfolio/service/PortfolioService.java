@@ -73,4 +73,33 @@ public class PortfolioService {
             throw new Exception(e.getMessage());
         }
     }
+
+    public SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>> recommendPortfolios() throws Exception {
+        try {
+            List<Portfolio> portfolios = this.portfolioRepository.findAllByOrderByLikes();
+            List<PortfolioDTO.ViewPortfolioResponseDTO> portfolioResponseDTOs = new ArrayList<>();
+            portfolios.forEach(portfolio -> {
+                Long memberId = portfolio.getMember().getMemberId();
+                Long likes = portfolio.getLikes();
+
+                portfolioResponseDTOs.add(portfolio.toResponseDTO(memberId, likes));
+            });
+
+            return new SuccessResponse<>(true, portfolioResponseDTOs);
+        }catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public SuccessResponse<List<PortfolioDTO.ViewPortfolioResponseDTO>> allPortfolio() {
+        List<Portfolio> portfolios = this.portfolioRepository.findAll();
+        List<PortfolioDTO.ViewPortfolioResponseDTO> portfolioResponseDTOs = new ArrayList<>();
+        portfolios.forEach(portfolio -> {
+            Long memberId = portfolio.getMember().getMemberId();
+            Long likes = portfolio.getLikes();
+
+            portfolioResponseDTOs.add(portfolio.toResponseDTO(memberId, likes));
+        });
+        return new SuccessResponse<>(true, portfolioResponseDTOs);
+    }
 }

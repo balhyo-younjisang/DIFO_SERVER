@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -60,5 +61,22 @@ public class ProjectControllerImpl implements ProjectController{
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<SuccessResponse<List<ProjectDTO.ProjectSummaryResponseDTO>>> getProjectsRecommend() throws Exception {
+        SuccessResponse<List<ProjectDTO.ProjectSummaryResponseDTO>> response = this.projectService.getRecommendProjects();
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<SuccessResponse<List<ProjectDTO.ProjectDetailsResponseDTO>>> getAllProject() {
+        SuccessResponse<List<ProjectDTO.ProjectDetailsResponseDTO>> response = this.projectService.findAllProject();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
 }
