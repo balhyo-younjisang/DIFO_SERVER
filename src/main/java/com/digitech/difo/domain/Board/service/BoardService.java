@@ -1,11 +1,16 @@
 package com.digitech.difo.domain.Board.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.digitech.difo.domain.Board.domain.Board;
+import com.digitech.difo.domain.Board.domain.BoardWithComments;
 import com.digitech.difo.domain.Board.repository.BoardRepository;
+import com.digitech.difo.domain.BoardComment.domain.BoardComment;
+import com.digitech.difo.domain.BoardComment.repository.BoardCommentRepository;
+import com.digitech.difo.domain.BoardComment.service.BoardCommentService;
 import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.global.common.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final BoardCommentRepository boardCommentRepository;
 
     /**
      * Page Sort하기 이 씨봉방
@@ -31,8 +37,19 @@ public class BoardService {
         return new SuccessResponse<>(true, boardRepository.findAll(pageable).getContent());
     }
 
-    public Board getPostById(Long id) {
-        return boardRepository.findById(id).orElse(null);
+    @Transactional
+    public SuccessResponse<BoardWithComments> getPostByIdWithComments(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElse(null);
+
+        if (board == null) {
+            return new SuccessResponse<>(false, null); // 게시물을 찾을 수 없는 경우 처리
+        }
+
+        List<BoardComment> comments = boardCommentRepository.findAllCommentsByBoardBoardId(id);
+        BoardWithComments boardWithComments = new BoardWithComments(board, comments);
+
+        return new SuccessResponse<>(true, boardWithComments);
     }
 
     public Board createPost(Board board) { return boardRepository.save(board);}

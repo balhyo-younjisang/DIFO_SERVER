@@ -1,6 +1,7 @@
 package com.digitech.difo.domain.Board.controller;
 
 import com.digitech.difo.domain.Board.domain.Board;
+import com.digitech.difo.domain.Board.domain.BoardWithComments;
 import com.digitech.difo.domain.Board.service.BoardService;
 import com.digitech.difo.global.common.SuccessResponse;
 import jakarta.websocket.server.PathParam;
@@ -27,7 +28,7 @@ public interface BoardController {
      * @return
      */
     @GetMapping("/posts/{id}")
-    public Board getPostById(@PathVariable Long id);
+    public SuccessResponse<BoardWithComments> getPostById(@PathVariable Long id);
 
     @PostMapping("/register")
     public Board createBoard(@RequestBody Board board) throws  Exception;
