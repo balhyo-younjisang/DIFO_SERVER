@@ -34,4 +34,7 @@ public interface BoardController {
 
     @DeleteMapping("/delete")
     public SuccessResponse<Void> deleteBoard(@RequestParam(value = "id") Long id) throws Exception;
+
+    @PostMapping("/like")
+    public Board updateLikes(@RequestParam(value="id")Long id) throws  Exception;
 }

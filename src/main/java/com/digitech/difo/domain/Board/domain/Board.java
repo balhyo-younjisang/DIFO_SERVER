@@ -1,10 +1,8 @@
 package com.digitech.difo.domain.Board.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -27,7 +25,13 @@ public class Board {
     @Column(nullable = false)
     private String author;
 
+    @Column(nullable = false)
     private Date time;
 
-    private Long likes;
+    @Builder.Default
+    private long likes = 0;
+
+    public void setLikes(long likes) {
+        this.likes = likes;
+    }
 }

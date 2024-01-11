@@ -71,4 +71,14 @@ public class BoardService {
             throw new Exception(e.getMessage());
         }
     }
+    @Transactional
+    public  Board updateLikes(Long id) throws  Exception{
+        try {
+            Board board = boardRepository.findByBoardId(id);
+            board.setLikes(board.getLikes() + 1);
+            return boardRepository.save(board);
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
 }
