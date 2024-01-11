@@ -1,6 +1,7 @@
 package com.digitech.difo.domain.BoardComment.service;
 
 import com.digitech.difo.domain.Board.domain.Board;
+import com.digitech.difo.domain.Board.domain.BoardWithComments;
 import com.digitech.difo.domain.Board.repository.BoardRepository;
 import com.digitech.difo.domain.BoardComment.domain.BoardComment;
 import com.digitech.difo.domain.BoardComment.repository.BoardCommentRepository;
@@ -22,18 +23,6 @@ public class BoardCommentService {
     private final BoardCommentRepository boardCommentRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
-
-    @Transactional
-    public ResponseEntity<SuccessResponse<List<BoardComment>>> getComments(long id) {
-        List<BoardComment> comments = boardCommentRepository.findAllCommentsByBoardBoardId(id);
-        System.out.println(id);
-        //List<Board> comments = boardCommentRepository.findAllByBoardId(id);
-
-        // Assuming SuccessResponse is a custom class you have defined
-        SuccessResponse<List<BoardComment>> successResponse = new SuccessResponse<>(true, comments);
-
-        return ResponseEntity.ok(successResponse);
-    }
 
     @Transactional
     public void createBoardComment(BoardComment boardComment,  long boardId, Optional<Long> memberId) throws Exception {

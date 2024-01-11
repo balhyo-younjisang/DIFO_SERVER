@@ -15,9 +15,10 @@ import java.util.Optional;
 @RestController
 public class BoardCommentControllerImpl implements BoardCommentController {
     private BoardCommentService boardCommentService;
+
     @Override
-    public ResponseEntity<SuccessResponse<List<BoardComment>>> getComments(long id) {
-        return boardCommentService.getComments(id);
+    public ResponseEntity<SuccessResponse<List<BoardComment>>> getComments(long id) throws Exception {
+        return null;
     }
 
     @Override
