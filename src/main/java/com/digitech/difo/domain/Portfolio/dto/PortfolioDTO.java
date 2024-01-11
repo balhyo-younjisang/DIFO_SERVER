@@ -2,7 +2,6 @@ package com.digitech.difo.domain.Portfolio.dto;
 
 import com.digitech.difo.domain.Portfolio.domain.Portfolio;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,6 +38,7 @@ public class PortfolioDTO {
         }
     }
 
+    @Getter
     public static class ViewPortfolioResponseDTO extends PortfolioBaseDTO{
         private Long portfolioId;
         private long likes;
