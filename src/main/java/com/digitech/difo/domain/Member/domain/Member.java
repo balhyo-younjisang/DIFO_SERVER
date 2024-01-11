@@ -44,6 +44,6 @@ public class Member {
     private Portfolio portfolio;
 
     public MemberDTO.MemberResponseDTO toDTO() {
-        return MemberDTO.MemberResponseDTO.builder().memberId(this.getMemberId()).email(this.getEmail()).name(this.getName()).githubUrl(this.getGithubUrl()).portfolioId(this.portfolio.getPortfolioId()).build();
+        return MemberDTO.MemberResponseDTO.builder().memberId(this.getMemberId()).email(this.getEmail()).name(this.getName()).githubUrl(this.getGithubUrl()).portfolioId(this.portfolio != null ? this.portfolio.getPortfolioId() : -1).build();
     }
 }

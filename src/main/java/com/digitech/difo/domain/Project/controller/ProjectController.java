@@ -14,7 +14,7 @@ public interface ProjectController {
 
     /**
      * 프로젝트를 Project Table에 저장하고 생성된 Project를 리턴
-     * @param registerProjectRequestDTO
+     * @param registerProjectRequestDTO 프로젝트 데이터
      * @return
      */
     @PostMapping("/register")
@@ -22,7 +22,7 @@ public interface ProjectController {
 
     /**
      * Parameter로 들어온 Project Id를 Project Table에서 검색 후 삭제
-     * @param id
+     * @param id 프로젝트 아이디
      * @return
      */
     @DeleteMapping("/delete")
@@ -30,9 +30,17 @@ public interface ProjectController {
 
     /**
      * Parameter로 들어온 Project Id를 Project Table에서 검색한 후 리턴
-     * @param id
+     * @param id 프로젝트 아이디
      * @return
      */
     @GetMapping("/details")
     public ResponseEntity<SuccessResponse<ProjectDTO.ProjectDetailsResponseDTO>> getProjectDetails(@RequestParam(value = "id") Long id) throws Exception;
+
+    /**
+     * 프로젝트 좋아요 기능
+     * @param id 프로젝트 아이디
+     * @return
+     */
+    @PatchMapping("/likes")
+    public ResponseEntity<SuccessResponse<Void>> patchLikeProject(@RequestParam(value = "id") Long id) throws Exception;
 }

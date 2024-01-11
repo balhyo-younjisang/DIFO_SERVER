@@ -29,7 +29,7 @@ public interface MemberController {
     public ResponseEntity<SuccessResponse<MemberDTO.MemberResponseDTO>> callback(@RequestParam(name = "code") String code) throws Exception;
 
     /**
-     * Member Id를 Member Table 에서 검색해 유저 정보를 리턴
+     * Member Id를 Member Table 에서 검색해 유저 정보를 리턴, 포트폴리오가 없다면 portfolioId를 -1 리턴
      * @param memberId
      * @return
      */

@@ -59,13 +59,17 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectStack> stacks = new ArrayList<>();
 
+    @Column(nullable = false)
+    @Builder.Default
+    private long likes = 0;
+
     public ProjectDTO.ProjectDetailsResponseDTO toDTO(List<MemberDTO.MemberResponseDTO> members, List<StackDTO.StackProjectResponseDTO> stacks) {
         return ProjectDTO.ProjectDetailsResponseDTO.builder()
                 .projectName(projectName).projectIntroduction(projectIntroduction)
                 .deployUrl(deployUrl).thumbnailUrl(thumbnail)
                 .githubUrl(githubUrl).startDate(startDate)
                 .endDate(endDate).mainContents(mainContents)
-                .subject(subject).userData(members).stacks(stacks)
+                .subject(subject).userData(members).stacks(stacks).likes(likes)
                 .build();
     }
 

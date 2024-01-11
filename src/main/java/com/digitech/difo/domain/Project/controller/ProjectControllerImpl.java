@@ -49,4 +49,14 @@ public class ProjectControllerImpl implements ProjectController{
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<SuccessResponse<Void>> patchLikeProject(@RequestParam(name = "id") Long id) throws Exception {
+        SuccessResponse<Void> response = this.projectService.likeProject(id);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
 }

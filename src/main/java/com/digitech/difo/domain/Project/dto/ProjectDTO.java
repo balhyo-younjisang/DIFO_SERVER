@@ -61,13 +61,15 @@ public class ProjectDTO {
         private String thumbnailUrl; // 포트폴리오 썸네일
         private List<MemberDTO.MemberResponseDTO> userData; // 참여한 유저들의 이메일
         private List<StackDTO.StackProjectResponseDTO> stacks; // 스택들
+        private long likes;
 
         @Builder
-        public ProjectDetailsResponseDTO(String subject, String projectName, String projectIntroduction, Date startDate, Date endDate, String githubUrl, String deployUrl, String mainContents, String thumbnailUrl, List<MemberDTO.MemberResponseDTO> userData, List<StackDTO.StackProjectResponseDTO> stacks) {
+        public ProjectDetailsResponseDTO(String subject, String projectName, String projectIntroduction, Date startDate, Date endDate, String githubUrl, String deployUrl, String mainContents, String thumbnailUrl, List<MemberDTO.MemberResponseDTO> userData, List<StackDTO.StackProjectResponseDTO> stacks, long likes) {
             super(subject, projectName, projectIntroduction, startDate, endDate, githubUrl, deployUrl, mainContents);
             this.thumbnailUrl = thumbnailUrl;
             this.userData = userData;
             this.stacks = stacks;
+            this.likes = likes;
         }
     }
 

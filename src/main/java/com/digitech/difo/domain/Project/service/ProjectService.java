@@ -8,6 +8,8 @@ import com.digitech.difo.domain.MemberProject.domain.MemberProject;
 import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.Member.repository.MemberRepository;
 import com.digitech.difo.domain.MemberProject.repository.MemberProjectRepository;
+import com.digitech.difo.domain.Portfolio.domain.Portfolio;
+import com.digitech.difo.domain.Portfolio.repository.PortfolioRepository;
 import com.digitech.difo.domain.Project.domain.Project;
 import com.digitech.difo.domain.Project.dto.ProjectDTO;
 import com.digitech.difo.domain.Project.repository.ProjectRepository;
@@ -38,6 +40,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final MemberProjectRepository memberProjectRepository;
     private final ProjectStackRepository projectStackRepository;
+    private final PortfolioRepository portfolioRepository;
     private final StackReposiroty stackReposiroty;
     private final AmazonS3Client amazonS3Client;
 
@@ -175,6 +178,26 @@ public class ProjectService {
             projects.forEach(project -> projects_id.add(project.getProject().getProjectId()));
 
             return projects_id;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    /**
+     * 프로젝트의 현재 좋아요수를 가져와 1을 증가시킨 후 저장
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public SuccessResponse<Void> likeProject(Long id) throws Exception {
+        try {
+            Optional<Project> project = this.projectRepository.findById(id);
+            long currentLike = project.get().getLikes();
+
+            project.get().setLikes(currentLike + 1);
+            this.projectRepository.saveAndFlush(project.get());
+
+            return new SuccessResponse<>(true, null);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
