@@ -25,8 +25,8 @@ public class BoardControllerImpl implements BoardController {
     private final BoardService boardService;
 
     @Override
-    public ResponseEntity<SuccessResponse<List<Board>>> getEntriesByPage(@PathVariable int index, @PathParam(value = "count") int pageCount) {
-        SuccessResponse<List<Board>> boards = boardService.getListsByPage(index, pageCount);
+    public ResponseEntity<SuccessResponse<List<Board>>> getEntriesByPage(@PathVariable int index) {
+        SuccessResponse<List<Board>> boards = boardService.getListsByPage(index);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 

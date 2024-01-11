@@ -16,11 +16,10 @@ public interface BoardController {
     /**
      * 페이지의 인덱스와 찾을 갯수를 파라미터로 전달받아 검색 후 리턴
      * @param index
-     * @param pageCount
      * @return
      */
-    @GetMapping("/list")
-    public ResponseEntity<SuccessResponse<List<Board>>> getEntriesByPage( int index, int pageCount);
+    @GetMapping("/{index}")
+    public ResponseEntity<SuccessResponse<List<Board>>> getEntriesByPage(@PathVariable int index);
 
     /**
      * 게시글의 데이터를 전달받은 아이디로 검색 후 리턴

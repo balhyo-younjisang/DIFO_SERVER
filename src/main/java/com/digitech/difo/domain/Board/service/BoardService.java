@@ -32,7 +32,8 @@ public class BoardService {
      * @return
      */
     @Transactional
-    public SuccessResponse<List<Board>> getListsByPage(int pageIndex, int boardCount) {
+    public SuccessResponse<List<Board>> getListsByPage(int pageIndex) {
+        int boardCount = 10;
         Pageable pageable = PageRequest.of(pageIndex, boardCount);
         return new SuccessResponse<>(true, boardRepository.findAll(pageable).getContent());
     }
