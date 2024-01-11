@@ -24,11 +24,10 @@ public class PortfolioService {
     private final EntityManager entityManager;
     private final PortfolioRepository portfolioRepository;
     private final MemberRepository memberRepository;
-    private final StackReposiroty stackReposiroty;
 
-    public SuccessResponse<Portfolio> registerProject(PortfolioDTO.PortfolioBaseDTO portfolioBaseDTO) {
-        Portfolio portfolio = this.portfolioRepository.save(portfolioBaseDTO.toEntity());
-        Optional<Member> portfolioMember = this.memberRepository.findById(portfolioBaseDTO.getMemberId());
+    public SuccessResponse<Portfolio> registerPortfolio(PortfolioDTO.CreatePortfolioRequestDTO createPortfolioRequestDTO) {
+        Portfolio portfolio = this.portfolioRepository.save(createPortfolioRequestDTO.toEntity());
+        Optional<Member> portfolioMember = this.memberRepository.findById(createPortfolioRequestDTO.getMemberId());
 
         if(portfolioMember.isEmpty()) throw new NotFoundException("User not found error");
 
@@ -39,5 +38,37 @@ public class PortfolioService {
         this.portfolioRepository.save(portfolio);
 
         return new SuccessResponse<>(true, portfolio);
+    }
+
+    public SuccessResponse<PortfolioDTO.ViewPortfolioResponseDTO> likePortfolio(long portfolioId) throws Exception {
+        try {
+            Optional<Portfolio> portfolio = this.portfolioRepository.findById(portfolioId);
+
+            if(portfolio.isEmpty()) throw new NotFoundException("Portfolio is not found");
+
+            long currentLike = portfolio.get().getLikes();
+            portfolio.get().setLikes(currentLike + 1);
+            this.portfolioRepository.save(portfolio.get());
+
+            Long memberId = portfolio.get().getMember().getMemberId();
+
+            return new SuccessResponse<>(true, portfolio.get().toResponseDTO(memberId));
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public SuccessResponse<PortfolioDTO.ViewPortfolioResponseDTO> viewPortfolioDetails(Long portfolioId) throws Exception {
+        try {
+            Optional<Portfolio> portfolio = this.portfolioRepository.findById(portfolioId);
+
+            if(portfolio.isEmpty()) throw new NotFoundException("Portfolio is Not Found");
+
+            Long memberId = portfolio.get().getMember().getMemberId();
+
+            return new SuccessResponse<>(true, portfolio.get().toResponseDTO(memberId));
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }
