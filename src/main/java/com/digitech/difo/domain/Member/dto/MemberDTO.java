@@ -35,14 +35,16 @@ public class MemberDTO {
         private String email;
         private String githubUrl;
         private List<Long> projectsId;
+        private Long portfolioId;
 
         @Builder
-        public MemberResponseDTO(Long memberId, String name, String email, String githubUrl, List<Long> projectsId) {
+        public MemberResponseDTO(Long memberId, String name, String email, String githubUrl, List<Long> projectsId, Long portfolioId) {
             super(memberId);
             this.name = name;
             this.email = email;
             this.githubUrl = githubUrl;
             this.projectsId = projectsId;
+            this.portfolioId = portfolioId;
         }
     }
 }

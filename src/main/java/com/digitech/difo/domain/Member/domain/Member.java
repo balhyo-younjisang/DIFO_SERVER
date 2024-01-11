@@ -2,6 +2,7 @@ package com.digitech.difo.domain.Member.domain;
 
 import com.digitech.difo.domain.Member.dto.MemberDTO;
 import com.digitech.difo.domain.MemberProject.domain.MemberProject;
+import com.digitech.difo.domain.Portfolio.domain.Portfolio;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,7 +38,12 @@ public class Member {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "member", orphanRemoval = true)
     private List<MemberProject> projects = new ArrayList<>();
 
+    @OneToOne
+    @Setter
+    @JoinColumn(name = "PORTFOLIO_ID")
+    private Portfolio portfolio;
+
     public MemberDTO.MemberResponseDTO toDTO() {
-        return MemberDTO.MemberResponseDTO.builder().memberId(this.getMemberId()).email(this.getEmail()).name(this.getName()).githubUrl(this.getGithubUrl()).build();
+        return MemberDTO.MemberResponseDTO.builder().memberId(this.getMemberId()).email(this.getEmail()).name(this.getName()).githubUrl(this.getGithubUrl()).portfolioId(this.portfolio.getPortfolioId()).build();
     }
 }
