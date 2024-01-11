@@ -48,7 +48,15 @@ public class BoardControllerImpl implements BoardController {
         return boardService.deletePost(id);
     }
 
+    @Override
+    public Board updateLikes(Long id) throws Exception {
+        return boardService.updateLikes(id);
+    }
 
+    @Override
+    public ResponseEntity<SuccessResponse<List<Board>>> sortBoards(String type) throws Exception {
+        return boardService.sortBoard(type);
+    }
 
 
 }

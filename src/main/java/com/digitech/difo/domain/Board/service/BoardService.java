@@ -17,8 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,9 +32,14 @@ public class BoardService {
      */
     @Transactional
     public SuccessResponse<List<Board>> getListsByPage(int pageIndex) {
-        int boardCount = 10;
+        int boardCount = 3;
         Pageable pageable = PageRequest.of(pageIndex, boardCount);
-        return new SuccessResponse<>(true, boardRepository.findAll(pageable).getContent());
+
+        Comparator<Board> dateComparator = Comparator.comparing(Board::getBoardId).reversed();
+        List<Board> sortedBoards = new ArrayList<>(boardRepository.findAll(pageable).getContent());
+        Collections.sort(sortedBoards, dateComparator);
+
+        return new SuccessResponse<>(true, sortedBoards);
     }
 
     @Transactional
@@ -68,6 +72,30 @@ public class BoardService {
             this.boardRepository.deleteById(id);
             return new SuccessResponse<Void>(true, null);
         } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+    @Transactional
+    public  Board updateLikes(Long id) throws  Exception{
+        try {
+            Board board = boardRepository.findByBoardId(id);
+            board.setLikes(board.getLikes() + 1);
+            return boardRepository.save(board);
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public ResponseEntity<SuccessResponse<List<Board>>> sortBoard(String type) throws Exception {
+        try {
+            List<Board> sortedBoard;
+            if (type.equals("recommend")){
+                sortedBoard = boardRepository.findByOrderByLikesDesc();
+            } else {
+                sortedBoard = boardRepository.findByOrderByTimeDesc();
+            }
+            return ResponseEntity.ok(new SuccessResponse<>(true, sortedBoard));
+        } catch (Exception e){
             throw new Exception(e.getMessage());
         }
     }
