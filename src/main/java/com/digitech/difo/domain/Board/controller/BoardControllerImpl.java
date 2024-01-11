@@ -1,5 +1,6 @@
 package com.digitech.difo.domain.Board.controller;
 
+import com.digitech.difo.domain.Board.domain.BoardWithComments;
 import com.digitech.difo.global.common.SuccessResponse;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,8 @@ public class BoardControllerImpl implements BoardController {
     private final BoardService boardService;
 
     @Override
-    public ResponseEntity<SuccessResponse<List<Board>>> getEntriesByPage(@PathVariable int index, @PathParam(value = "count") int pageCount) {
-        SuccessResponse<List<Board>> boards = boardService.getListsByPage(index, pageCount);
+    public ResponseEntity<SuccessResponse<List<Board>>> getEntriesByPage(@PathVariable int index) {
+        SuccessResponse<List<Board>> boards = boardService.getListsByPage(index);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
@@ -33,8 +34,8 @@ public class BoardControllerImpl implements BoardController {
     }
 
     @Override
-    public Board getPostById(@PathVariable Long id) {
-        return boardService.getPostById(id);
+    public SuccessResponse<BoardWithComments> getPostById(@PathVariable Long id) {
+        return boardService.getPostByIdWithComments(id);
     }
 
     @Override
